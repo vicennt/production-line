@@ -252,7 +252,7 @@ pipeline{
 
         stage('Generate Maven project') {
             steps{
-                sh "mvn -DarchetypeVersion=3.2.1 -DarchetypeGroupId=com.devonfw.java.templates -DarchetypeArtifactId=devon4j-template-server archetype:generate -DgroupId=${GROUP_ID} -DartifactId=${PROJECT_NAME_FULL} -Dversion=0.0.0 -Dpackage=${GROUP_ID}.${PROJECT_NAME_FULL.replace('-','.')} -DdbType=${DB_TYPE} -DinteractiveMode=false"
+                sh "mvn -DarchetypeVersion=2020.12.001 -DarchetypeGroupId=com.devonfw.java.templates -DarchetypeArtifactId=devon4j-template-server archetype:generate -DgroupId=${GROUP_ID} -DartifactId=${PROJECT_NAME_FULL} -Dversion=0.0.0 -Dpackage=${GROUP_ID}.${PROJECT_NAME_FULL.replace('-','.')} -DdbType=${DB_TYPE} -DinteractiveMode=false"
             }
         }
         
