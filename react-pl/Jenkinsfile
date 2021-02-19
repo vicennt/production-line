@@ -230,7 +230,7 @@ pipeline{
             }
         }
     
-        stage('Install create-react-app') {
+        stage('Install create-react-app & cicdgen') {
             tools {
                 nodejs "NodeJS ${NODE_VERSION}"
             }
@@ -239,23 +239,47 @@ pipeline{
                 deleteDir()
 
                 sh 'npm install -g create-react-app'
+                sh 'npm i -g @devonfw/cicdgen@1.5'
             }
         }
       
-        stage('create base project using typescript template') {
+        stage('create react base project using typescript template') {
             tools {
                 nodejs "NodeJS ${NODE_VERSION}"
             }
             steps{
                 sh "npx create-react-app ${PROJECT_NAME_FULL} --template typescript"
-                
-                dir(PROJECT_NAME_FULL) {
-                  sh 'git config user.email "jenkins-pl@example.com"'
-                  sh 'git config user.name "Jenkins"'
-                }  
             }
         }
         
+        stage('Create cicdgen template (currently for angular but then will adapt it to react)') {
+            tools {
+                nodejs "NodeJS ${NODE_VERSION}"
+            }
+            steps{
+                script{ 
+                    def dockerString = ''
+                    def ocString = ''
+
+                    if (params.DEPLOY == 'docker'){
+                        dockerString = "--docker --dockerurl ${env.DOCKER_URL} --registryurl ${env.REGISTRY_URL} "
+                        if (env.DOCKER_CERT) {
+                            dockerString += "--dockercertid ${env.DOCKER_CERT} "
+                        }
+                    }
+
+                    if (params.DEPLOY == 'openshift'){
+                        ocString = "--openshift --ocname ${env.OC_NAME} --registryurl ${env.REGISTRY_URL} "
+                    }
+                
+                    dir(PROJECT_NAME_FULL) {
+                        sh 'git config user.email "jenkins-pl@example.com"'
+                        sh 'git config user.name "Jenkins"'
+                        sh "cicdgen generate devon4ng ${ocString}${dockerString}--groupid ${params.GROUP_ID}"
+                    }   
+                }
+            }
+        }
 
         stage('Pushing template to Gitlab') {
             steps{
