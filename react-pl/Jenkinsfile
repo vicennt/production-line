@@ -257,7 +257,9 @@ pipeline{
                     dir(PROJECT_NAME_FULL){
                         def token = GitLab.gitlabApiToken(GITLAB_USER_PRIVATE_TOKEN);
                         println "initialize git repository"
-                        sh 'git init --initial-branch=master'
+                        sh 'git init'
+                        println "showing git branches"
+                        sh 'git branch'
                         sh 'git config user.email "jenkins-pl@example.com"'
                         sh 'git config user.name "Jenkins"'
                         sh "git status && git remote add origin http://oauth2:${token}@gitlab-core:80/gitlab/${GITLAB_CREATE_GROUP_NAME}/${PROJECT_NAME_FULL}.git"
