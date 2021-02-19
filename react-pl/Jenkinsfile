@@ -248,6 +248,7 @@ pipeline{
                 nodejs "NodeJS ${NODE_VERSION}"
             }
             steps{
+                println "npx create-react-app ${PROJECT_NAME_FULL} --template typescript"
                 sh "npx create-react-app ${PROJECT_NAME_FULL} --template typescript"
             }
         }
