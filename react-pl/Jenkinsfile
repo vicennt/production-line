@@ -248,8 +248,6 @@ pipeline{
             }
             steps{
                 sh "npx create-react-app ${PROJECT_NAME_FULL} --template typescript"
-                println "Showing the files that are in this directory"
-                sh 'ls -la'
             }
         }
 
@@ -258,8 +256,8 @@ pipeline{
                 script {
                     dir(PROJECT_NAME_FULL){
                         def token = GitLab.gitlabApiToken(GITLAB_USER_PRIVATE_TOKEN);
-                        println "Showing the files that are in this directory"
-                        sh 'ls -la'
+                        println "initialize git repository"
+                        sh 'git init'
                         sh 'git config user.email "jenkins-pl@example.com"'
                         sh 'git config user.name "Jenkins"'
                         sh "git status && git remote add origin http://oauth2:${token}@gitlab-core:80/gitlab/${GITLAB_CREATE_GROUP_NAME}/${PROJECT_NAME_FULL}.git"
