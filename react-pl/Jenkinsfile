@@ -270,6 +270,7 @@ pipeline{
                         writeJSON file: 'package.json', json: packageJson, pretty: 2
                         
                         sh """git add . && git commit -m "start 0.0.1 version" && git push --set-upstream origin develop"""
+                        sh "git fetch"
                         sh "git checkout master && git push origin master"
                         gitlabConfiguration.protectBranches(params.GITLAB_CREATE_GROUP_NAME, PROJECT_NAME_FULL, "master", "40", "30");
                         gitlabConfiguration.unprotectBranch(params.GITLAB_CREATE_GROUP_NAME, PROJECT_NAME_FULL, "develop");
