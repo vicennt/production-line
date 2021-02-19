@@ -247,7 +247,7 @@ pipeline{
                         def token = GitLab.gitlabApiToken(GITLAB_USER_PRIVATE_TOKEN);
                         sh 'git config user.email "jenkins-pl@example.com"'
                         sh 'git config user.name "Jenkins"'
-                        sh "git status && git remote set origin http://oauth2:${token}@gitlab-core:80/gitlab/${GITLAB_CREATE_GROUP_NAME}/${PROJECT_NAME_FULL}.git"
+                        sh "git status && git remote set-url origin http://oauth2:${token}@gitlab-core:80/gitlab/${GITLAB_CREATE_GROUP_NAME}/${PROJECT_NAME_FULL}.git"
                         sh "git checkout -b develop"
                         
                         def packageJson = readJSON file: 'package.json'
