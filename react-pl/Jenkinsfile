@@ -247,7 +247,7 @@ pipeline{
                 nodejs "NodeJS ${NODE_VERSION}"
             }
             steps{
-                sh "npx create-react-app "+ params.PROJECT_NAME + " --template typescript"
+                sh "npx create-react-app ${PROJECT_NAME_FULL} --template typescript"
                 
                 dir(PROJECT_NAME_FULL) {
                   sh 'git config user.email "jenkins-pl@example.com"'
