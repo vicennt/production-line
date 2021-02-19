@@ -229,18 +229,7 @@ pipeline{
                 }
             }
         }
-    
-        stage('Install create-react-app') {
-            tools {
-                nodejs "NodeJS ${NODE_VERSION}"
-            }
-            steps{
-                cleanWs()
-                deleteDir()
-
-                sh 'npm install -g create-react-app'
-            }
-        }
+ 
       
         stage('create react base project using typescript template') {
             tools {
@@ -256,10 +245,6 @@ pipeline{
                 script {
                     dir(PROJECT_NAME_FULL){
                         def token = GitLab.gitlabApiToken(GITLAB_USER_PRIVATE_TOKEN);
-                        println "initialize git repository"
-                        sh 'git init'
-                        println "showing git branches"
-                        sh 'git branch'
                         sh 'git config user.email "jenkins-pl@example.com"'
                         sh 'git config user.name "Jenkins"'
                         sh "git status && git remote add origin http://oauth2:${token}@gitlab-core:80/gitlab/${GITLAB_CREATE_GROUP_NAME}/${PROJECT_NAME_FULL}.git"
@@ -270,7 +255,6 @@ pipeline{
                         writeJSON file: 'package.json', json: packageJson, pretty: 2
                         
                         sh """git add . && git commit -m "start 0.0.1 version" && git push --set-upstream origin develop"""
-                        sh "git fetch"
                         sh "git checkout master && git push origin master"
                         gitlabConfiguration.protectBranches(params.GITLAB_CREATE_GROUP_NAME, PROJECT_NAME_FULL, "master", "40", "30");
                         gitlabConfiguration.unprotectBranch(params.GITLAB_CREATE_GROUP_NAME, PROJECT_NAME_FULL, "develop");
